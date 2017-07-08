@@ -2,6 +2,12 @@
 import math
 import os, base64, requests, json, subprocess
 import urllib, http
+from qcloud_image import Client
+from qcloud_image import CIUrl, CIFile, CIBuffer, CIUrls, CIFiles, CIBuffers
+appid = '1252308077'
+secret_id = 'AKIDvicP4aJ1znQq9OsgjcQ6ZptkOp46pfDc'
+secret_key = 'OagaIn5A2hDYhdN0ITTHsRp0zlKgroaD'
+bucket = 'faceidentify'
 
 headers = {
     'Content-Type': 'application/octet-stream',
@@ -14,31 +20,39 @@ params = urllib.parse.urlencode({
 
 
 def faceplus(filepath):
-    result = {
-        'underLipTop':0,
-        'mouthRight':0,
-        'upperLipTop':0,
-        'upperLipBottom':0,
-        'mouthLeft':0,
-        'underLipBottom':0
-    }
-    face_file = filepath
-    image = open(face_file, "rb")
-    image_body = image.read()
+    #result = {
+    #    'underLipTop':0,
+    #    'mouthRight':0,
+    #    'upperLipTop':0,
+    #    'upperLipBottom':0,
+    #    'mouthLeft':0,
+    #    'underLipBottom':0
+    #}
+    #face_file = filepath
+    #image = open(face_file, "rb")
+    #image_body = image.read()
+    
+    client = Client(appid, secret_id, secret_key, bucket)
+    client.use_http()
+    client.set_timeout(30)
+    result=client.face_shape(CIFile(filepath),1)["data"]["face_shape"][0]['mouth']
 
-    conn = http.client.HTTPSConnection('api.cognitive.azure.cn')
-    conn.request("POST", "/face/v1.0/detect?%s" % params, image_body, headers)
-    response = conn.getresponse()
-    rawData = response.read().decode()
-    if not json.loads(rawData)[0]:
-        return False
-    print(json.loads(rawData))
-    rawData = json.loads(rawData)[0]['faceLandmarks']
-    conn.close()
-    for i in rawData:
-        if 'Lip' in i or 'mouth' in i:
-            result[i]=rawData[i]
-            print(i)
+
+
+    
+    #conn = http.client.HTTPSConnection('api.cognitive.azure.cn')
+    #conn.request("POST", "/face/v1.0/detect?%s" % params, image_body, headers)
+    #response = conn.getresponse()
+    #rawData = response.read().decode()
+    #if not json.loads(rawData)[0]:
+    #    return False
+    #print(json.loads(rawData))
+    #rawData = json.loads(rawData)[0]['faceLandmarks']
+    #conn.close()
+    #for i in rawData:
+    #    if 'Lip' in i or 'mouth' in i:
+    #        result[i]=rawData[i]
+    #        print(i)
     return result
 
 # underLipTop
