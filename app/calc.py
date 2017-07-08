@@ -68,22 +68,23 @@ def faceplus(filepath):
 # mouthLeft
 # underLipBottom
 
-def get_lenth(a,b):
+def get_length(a,b):
     return math.sqrt(pow(a['x'] - b['x'],2) + pow(a['y'] - b['y'],2))
 
 def update_sample(sample,standard):
     #print(sample,standard)
     width_standard = standard[6]['x'] - standard[0]['x']
-    width_sample = get_lenth(sample[6],sample[0])
+    width_sample = get_length(sample[6],sample[0])
+    width=sample[6]['x']-sample[0]['x']
 
     center_standard = {
         'x': standard[6]['x'] - width_standard / 2,
-        'y': standard[6]['y'] + standard[0]['y'] / 2
+        'y': (standard[6]['y'] + standard[0]['y'] )/ 2
     }
 
     center_sample = {
-        'x': sample[6]['x'] - width_sample / 2,
-        'y': sample[6]['y'] + sample[0]['y'] / 2
+        'x': sample[6]['x'] - width / 2,
+        'y': (sample[6]['y'] + sample[0]['y'] )/ 2
     }
 
     mask = width_sample / width_standard
