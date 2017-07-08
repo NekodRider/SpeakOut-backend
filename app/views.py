@@ -156,6 +156,7 @@ def search(keyword):
 
 @app.route('/test',methods=["GET","POST"])
 def atest():
+    print(calc.test())
     return jsonify(calc.test())
      
 

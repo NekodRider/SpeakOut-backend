@@ -23,11 +23,9 @@ def faceplus(filepath):
     rawData = response.read().decode()
     rawData=json.loads(rawData)[0]['faceLandmarks']
     conn.close()
-    print(rawData)
     for i in rawData:
         if 'Lip' in i or 'mouth' in i:
             result+=rawData[i]
-            print(rawData[i])
     return result
 
 def get_score(filename):
