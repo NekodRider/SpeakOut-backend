@@ -180,13 +180,13 @@ def search(keyword):
 def detail(videoID):
     res={
     "test1":{
-        'videoURL':'storage.fredliang.cn/web/test2.mp4',
+        'videoURL':'https://storage.fredliang.cn/web/test2.mp4',
         'subtitle':{
             'time': 0,
             'text':'In this American English pronunciation video, we are going to go over some difference in  sounds in American English and British English'
         }
     },"test2":{
-        'videoURL':'storage.fredliang.cn/web/test3.mp4',
+        'videoURL':'https://storage.fredliang.cn/web/test3.mp4',
         'subtitle':{
             'time': 0,
             'text':"Today I'm going to make a video with another awesome English Channel on Youtube, Minuenlolink. The reason why I cooperating with them because they are in the UK. So together we are going to talk about some differences between American English and British English."
