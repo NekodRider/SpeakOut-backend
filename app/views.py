@@ -94,6 +94,66 @@ def upload():
     file = open('/upload/%s' % filename, 'wb')
     file.write(deString)
 
+@app.route('/api/user/info',methods=["GET"])
+def info():
+        return jsonify({
+            'avatar':'',
+            'name':'Test',
+            'tried':233
+        })
+
+@app.route('/api/video/list/<word>', methods=["GET"])
+def video_list(word):
+
+    return jsonify({
+        'list':[
+            {
+                'imageSrc':'',
+                'stars': 4,
+                'viewed':1234,
+                'title':'Nice'
+            },
+            {
+                'imageSrc': '',
+                'stars': 5,
+                'viewed': 321,
+                'title': 'Hard'
+            }
+        ]
+    })
+
+@app.route('/api/word/list/<tag>', methods=["GET"])
+def word_list(tag):
+
+    return jsonify({
+        'list':[
+            {
+                'word': 'love',
+                'played': 1314
+            },
+            {
+                'word': 'gg',
+                'played': 1322
+            }
+        ]
+    })
+
+@app.route('api/word/search/<keyword>', methods=["GET"])
+def search(keyword):
+    
+    return jsonify({
+        'list':[
+            {
+                'word': 'love',
+                'played': 1314
+            },
+            {
+                'word': 'gg',
+                'played': 1322
+            }
+        ]
+    })
+
 @app.route('/test',methods=["GET"])
 def atest():
     return jsonify(calc.test())
