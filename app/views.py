@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask import jsonify, make_response, request
-from app import app, data, calc
+from app import app, calc
 import urllib.request, urllib.parse
-import json
+import json,os
 import base64, time
 
 
