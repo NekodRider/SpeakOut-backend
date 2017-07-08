@@ -36,11 +36,12 @@ def faceplus(filepath):
     client.use_http()
     client.set_timeout(30)
     result=[]
-    rawData=client.face_shape(CIFile(filepath+'.jpg'),1)["data"]
+    raw=client.face_shape(CIFile(filepath+'.jpg'),1)
+    rawData=raw["data"]
     if "face_shape" in rawData:
         result=rawData["face_shape"][0]['mouth']
     else:
-        print(rawData)
+        print(raw)
 
 
 
@@ -71,6 +72,7 @@ def get_lenth(a,b):
     return math.sqrt(pow(a['x'] - b['x'],2) + pow(a['y'] - b['y'],2))
 
 def update_sample(sample,standard):
+    #print(sample,standard)
     width_standard = standard[6]['x'] - standard[0]['x']
     width_sample = get_lenth(sample[6],sample[0])
 
@@ -85,7 +87,7 @@ def update_sample(sample,standard):
     }
 
     mask = width_sample / width_standard
-    print("mask:", mask)
+    #print("mask:", mask)
     for i in range(22):
         if i!=0 and i!=6:
             sample[i]={
@@ -121,11 +123,11 @@ def get_frame(pos, filepath):
 
 
 def test():
-    get_frame(1, '~/hackinit/app/question/a')
-    dot_sample = faceplus('~/hackinit/app/question/a')
+    get_frame(1, os.getcwd()+'/app/question/a')
+    dot_sample = faceplus(os.getcwd()+'/app/question/a')
 
-    get_frame(1, '~/hackinit/app/question/b')
-    dot_standard = faceplus('~/hackinit/app/question/b')
+    get_frame(1, os.getcwd()+'/app/question/b')
+    dot_standard = faceplus(os.getcwd()+'/app/question/b')
 
     dot_sample = update_sample(dot_sample, dot_standard)
 
