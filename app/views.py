@@ -91,7 +91,7 @@ def upload():
     enString=rawData['base64String']
     question_id=str(rawData['questionID'])
     linkword=rawData['link_words']
-    deString=base64.decodebytes(enString)
+    #deString=base64.decodebytes(enString)
     filename="%s_%s.webm" % (question_id,str(time.clock()))
     file = open('/upload/%s' % filename, 'wb')
     file.write(deString)
@@ -185,6 +185,4 @@ def detail(videoID):
 @app.route('/test',methods=["GET","POST"])
 def atest():
     res=calc.test()
-    if res:
-        print(res)
-    return jsonify(res)
+    return res
