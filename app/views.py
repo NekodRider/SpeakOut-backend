@@ -90,12 +90,22 @@ def upload():
     rawData = json.loads((request.get_data()).decode(encoding="utf-8"))
     enString=rawData['base64String']
     question_id=str(rawData['questionID'])
+    linkword=rawData['link_words']
     deString=base64.decodebytes(enString)
     filename="%s_%s.webm" % (question_id,str(time.clock()))
     file = open('/upload/%s' % filename, 'wb')
     file.write(deString)
-
-    calc.judge(filename)
+    token=""
+    for i in linkword:
+        end=i['time']['end']
+        start=i['time']['start']
+        end_score=calc.judge(filename,question_id,end-(end-start)*1/4)
+        mid_score=calc.judge(filename,question_id,(end+start)/2)
+        start_score =calc.judge(filename,question_id,start+(end-start)*1/4)
+        token+='?'+i['words']+'&'+str(start_score)+'&'+str(mid_score)+'&'+str(end_score)
+    return jsonify({
+        'token':token
+    })
 
 
 @app.route('/api/user/info',methods=["GET","POST"])

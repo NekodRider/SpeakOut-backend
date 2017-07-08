@@ -120,14 +120,14 @@ def get_score(pos,sample, standard):
     dot_standard = faceplus(standard)
     dot_sample=update_sample(dot_sample,dot_standard)
 
-    rule=(dot_sample[9]+dot_sample[14]-dot_sample[3]-dot_sample[19])/2
+    rule=(dot_sample[9]['y']+dot_sample[14]['y']-dot_sample[3]['y']-dot_sample[19]['y'])/2
 
     ana_sample=analyse(dot_sample)
     ana_standard=analyse(dot_standard)
     res={'top':0,'bottom':0}
     for i in range(5):
-        tmp_top=abs(ana_sample[i]['top'] - ana_standard[i]['top'])/rule
-        tmp_bottom = abs(ana_sample[i]['bottom'] - ana_standard[i]['bottom'])/rule
+        tmp_top=abs(ana_sample['top'][i] - ana_standard['top'][i]/rule)
+        tmp_bottom = abs(ana_sample['bottom'][i] - ana_standard['bottom'][i]/rule)
         if abs(i-2)==2:
             res['top']+=tmp_top*0.1
             res['bottom']+=tmp_bottom*0.1
@@ -138,14 +138,17 @@ def get_score(pos,sample, standard):
             res['top']+=tmp_top*0.4
             res['bottom']+=tmp_bottom*0.4
 
-    return res
+
+    return 100*(1-(res['top']+res['bottom'])/2)
 
 
 def get_frame(pos, filepath):
     subprocess.run("ffmpeg -i %s.webm -y -f  image2  -ss %s -vframes 1  %s.jpg" % (filepath, str(pos), filepath),
                    shell=True)
 
-
+def judge(filename,videoID,pos):
+    res=get_score(pos,os.getcwd()+'/app/upload/'+filename,os.getcwd()+'/app/question/'+videoID+'.mp4')
+    return res
 
 def test():
     res=get_score(1,os.getcwd()+'/app/question/a',os.getcwd()+'/app/question/b')
