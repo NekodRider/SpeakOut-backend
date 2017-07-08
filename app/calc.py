@@ -120,14 +120,14 @@ def get_score(pos,sample, standard):
     dot_standard = faceplus(standard)
     dot_sample=update_sample(dot_sample,dot_standard)
 
-    rule=(dot_sample[9]['y']+dot_sample[14]['y']-dot_sample[3]['y']-dot_sample[19]['y'])/2
+    rule=abs(dot_sample[9]['y']+dot_sample[14]['y']-dot_sample[3]['y']-dot_sample[19]['y'])/2
 
     ana_sample=analyse(dot_sample)
     ana_standard=analyse(dot_standard)
     res={'top':0,'bottom':0}
     for i in range(5):
-        tmp_top=abs(ana_sample['top'][i] - ana_standard['top'][i]/rule)
-        tmp_bottom = abs(ana_sample['bottom'][i] - ana_standard['bottom'][i]/rule)
+        tmp_top=abs(ana_sample['top'][i] - ana_standard['top'][i])/rule
+        tmp_bottom = abs(ana_sample['bottom'][i] - ana_standard['bottom'][i])/rule
         if abs(i-2)==2:
             res['top']+=tmp_top*0.1
             res['bottom']+=tmp_bottom*0.1
@@ -139,7 +139,7 @@ def get_score(pos,sample, standard):
             res['bottom']+=tmp_bottom*0.4
 
 
-    return 100*(1-(res['top']+res['bottom'])/2)
+    return 100-100*(res['top']+res['bottom'])/2
 
 
 def get_frame(pos, filepath):
