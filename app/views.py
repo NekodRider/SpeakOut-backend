@@ -170,6 +170,8 @@ def detail(videoID):
         }
     })
 
+
+
 @app.route('/test',methods=["GET","POST"])
 def atest():
     res=calc.test()
