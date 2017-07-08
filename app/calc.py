@@ -100,6 +100,18 @@ def update_sample(sample,standard):
     return sample
 
 
+def analyse(ex):
+    y=ex[0]['y']
+    top = []
+    bottom = []
+    for i in range(22):
+        if i != 0 and i != 6:
+            if i < 17 and i > 11:
+                bottom.append(y-(ex[i]['y']+ex[i-11]['y'])/2)
+            elif i > 16:
+                top.append((ex[i-10]['y']+ex[i]['y'])/2-y)
+    return {'top':top,'bottom':bottom}
+
 
 def get_score(pos,sample, standard):
     get_frame(pos, sample)
@@ -108,13 +120,25 @@ def get_score(pos,sample, standard):
     dot_standard = faceplus(standard)
     dot_sample=update_sample(dot_sample,dot_standard)
 
+    rule=(dot_sample[9]+dot_sample[14]-dot_sample[3]-dot_sample[19])/2
 
+    ana_sample=analyse(dot_sample)
+    ana_standard=analyse(dot_standard)
+    res={'top':0,'bottom':0}
+    for i in range(5):
+        tmp_top=abs(ana_sample[i]['top'] - ana_standard[i]['top'])/rule
+        tmp_bottom = abs(ana_sample[i]['bottom'] - ana_standard[i]['bottom'])/rule
+        if abs(i-2)==2:
+            res['top']+=tmp_top*0.1
+            res['bottom']+=tmp_bottom*0.1
+        elif abs(i-2)==1:
+            res['top']+=tmp_top*0.2
+            res['bottom']+=tmp_bottom*0.2
+        else:
+            res['top']+=tmp_top*0.4
+            res['bottom']+=tmp_bottom*0.4
 
-
-
-
-
-    return [dot_standard,dot_sample]
+    return res
 
 
 def get_frame(pos, filepath):
@@ -124,12 +148,5 @@ def get_frame(pos, filepath):
 
 
 def test():
-    get_frame(1, os.getcwd()+'/app/question/a')
-    dot_sample = faceplus(os.getcwd()+'/app/question/a')
-
-    get_frame(1, os.getcwd()+'/app/question/b')
-    dot_standard = faceplus(os.getcwd()+'/app/question/b')
-
-    dot_sample = update_sample(dot_sample, dot_standard)
-
-    return {'st':dot_standard, 'sample':dot_sample}
+    res=get_score(1,os.getcwd()+'/app/question/a',os.getcwd()+'/app/question/b')
+    return res
