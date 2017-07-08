@@ -138,9 +138,9 @@ def word_list(tag):
         ]
     })
 
-@app.route('api/word/search/<keyword>', methods=["GET"])
+@app.route('/api/word/search/<keyword>', methods=["GET"])
 def search(keyword):
-    
+
     return jsonify({
         'list':[
             {
