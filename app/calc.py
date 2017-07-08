@@ -35,7 +35,12 @@ def faceplus(filepath):
     client = Client(appid, secret_id, secret_key, bucket)
     client.use_http()
     client.set_timeout(30)
-    result=client.face_shape(CIFile(filepath+'.jpg'),1)["data"]["face_shape"][0]['mouth']
+    result=[]
+    rawData=client.face_shape(CIFile(filepath+'.jpg'),1)["data"]
+    if "face_shape" in rawData:
+        result=rawData["face_shape"][0]['mouth']
+    else:
+        print(rawData)
 
 
 
@@ -119,8 +124,8 @@ def test():
     get_frame(1, '~/hackinit/app/question/a')
     dot_sample = faceplus('~/hackinit/app/question/a')
 
-    get_frame(1, '~/hackinit/app/question/a')
-    dot_standard = faceplus('~/hackinit/app/question/a')
+    get_frame(1, '~/hackinit/app/question/b')
+    dot_standard = faceplus('~/hackinit/app/question/b')
 
     dot_sample = update_sample(dot_sample, dot_standard)
 
