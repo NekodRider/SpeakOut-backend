@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from PIL import Image
+import math
 import os, base64, requests, json, subprocess
 import urllib, http
 
@@ -14,7 +14,14 @@ params = urllib.parse.urlencode({
 
 
 def faceplus(filepath):
-    result = []
+    result = {
+        'underLipTop':0,
+        'mouthRight':0,
+        'upperLipTop':0,
+        'upperLipBottom':0,
+        'mouthLeft':0,
+        'underLipBottom':0
+    }
     face_file = filepath
     image = open(face_file, "rb")
     image_body = image.read()
@@ -30,30 +37,69 @@ def faceplus(filepath):
     conn.close()
     for i in rawData:
         if 'Lip' in i or 'mouth' in i:
-            result.append(rawData[i])
+            result[i]=rawData[i]
             print(i)
     return result
 
+# underLipTop
+# mouthRight
+# upperLipTop
+# upperLipBottom
+# mouthLeft
+# underLipBottom
 
-def get_score(sample, standard):
-    dot_sample = get_frame(sample)
-    dot_standard = get_frame(standard)
+def get_lenth(a,b):
+    return math.sqrt(pow(a['x'] - b['x'],2) + pow(a['y'] - b['y'],2))
 
-    width_standard = dot_sample[5] - dot_sample[0]
-    height_standard = dot_sample[3] - dot_sample[2]
-
-    width_sample = dot_sample[5] - dot_sample[0]
-    height_sample = dot_sample[3] - dot_sample[2]
+def update_sample(sample,standard):
+    width_standard = standard['mouthRight']['x'] - standard['mouthLeft']['x']
+    width_sample = get_lenth(sample['mouthRight'],sample['mouthLeft'])
 
     center_standard = {
-                    'x':dot_standard[5]-width_standard/2,
-                    'y':dot_standard[3]-height_standard/2
+        'x': standard['mouthRight']['x'] - width_standard / 2,
+        'y': standard['mouthRight']['y'] + standard['mouthLeft']['y'] / 2
     }
 
     center_sample = {
-                    'x':dot_sample[5]-width_sample/2,
-                    'y':dot_sample[3]-height_sample/2
+        'x': sample['mouthRight']['x'] - width_sample / 2,
+        'y': sample['mouthRight']['y'] + sample['mouthLeft']['y'] / 2
     }
+
+    mask = width_sample / width_standard
+    print("mask:", mask)
+    sample={
+        'underLipTop': {
+            'x':center_standard['x'],
+            'y':-get_lenth(sample['underLipTop'],center_sample)*mask+center_standard['y']
+        },
+        'mouthRight': standard['mouthRight'],
+        'upperLipTop': {
+            'x':center_standard['x'],
+            'y':get_lenth(sample['upperLipTop'],center_sample)*mask+center_standard['y']
+        },
+        'upperLipBottom': {
+            'x':center_standard['x'],
+            'y':get_lenth(sample['upperLipBottom'],center_sample)*mask+center_standard['y']
+        },
+        'mouthLeft': standard['mouthLeft'],
+        'underLipBottom': {
+            'x':center_standard['x'],
+            'y':-get_lenth(sample['underLipBottom'],center_sample)*mask+center_standard['y']
+        }
+    }
+    return sample
+
+
+
+def get_score(pos,sample, standard):
+    get_frame(pos, sample)
+    get_frame(pos, standard)
+    dot_sample = faceplus(sample)
+    dot_standard = faceplus(standard)
+    dot_sample=update_sample(dot_sample,dot_standard)
+
+
+
 
 
 
@@ -65,10 +111,6 @@ def get_frame(pos, filepath):
     subprocess.run("ffmpeg -i %s.webm -y -f  image2  -ss %s -vframes 1  %s.jpg" % (filepath, str(pos), filepath),
                    shell=True)
 
-
-def judge(filename):
-    get_score(a)
-    return False
 
 
 def test():

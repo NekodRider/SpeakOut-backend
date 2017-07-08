@@ -113,12 +113,14 @@ def video_list(word):
         'list':[
             {
                 'imageSrc':'',
+                'videoID':1,
                 'stars': 4,
                 'viewed':1234,
                 'title':'Nice'
             },
             {
                 'imageSrc': '',
+                'videoID': 2,
                 'stars': 5,
                 'viewed': 321,
                 'title': 'Hard'
@@ -156,6 +158,16 @@ def search(keyword):
                 'played': 1322
             }
         ]
+    })
+
+@app.route('/api/video/detail/<videoID>',methods=["GET","POST"])
+def detail(videoID):
+    return jsonify({
+        'videoURL':'storage.fredliang.cn/web/test2.mp4',
+        'subtitle':{
+            'time':132,
+            'text':'gg'
+        }
     })
 
 @app.route('/test',methods=["GET","POST"])
