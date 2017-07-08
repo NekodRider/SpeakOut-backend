@@ -94,7 +94,7 @@ def upload():
     file = open('/upload/%s' % filename, 'wb')
     file.write(deString)
 
-@app.route('/api/user/info',methods=["GET"])
+@app.route('/api/user/info',methods=["GET","POST"])
 def info():
         return jsonify({
             'avatar':'',
@@ -102,7 +102,7 @@ def info():
             'tried':233
         })
 
-@app.route('/api/video/list/<word>', methods=["GET"])
+@app.route('/api/video/list/<word>', methods=["GET","POST"])
 def video_list(word):
 
     return jsonify({
@@ -122,7 +122,7 @@ def video_list(word):
         ]
     })
 
-@app.route('/api/word/list/<tag>', methods=["GET"])
+@app.route('/api/word/list/<tag>', methods=["GET","POST"])
 def word_list(tag):
 
     return jsonify({
@@ -138,7 +138,7 @@ def word_list(tag):
         ]
     })
 
-@app.route('/api/word/search/<keyword>', methods=["GET"])
+@app.route('/api/word/search/<keyword>', methods=["GET","POST"])
 def search(keyword):
 
     return jsonify({
@@ -154,7 +154,7 @@ def search(keyword):
         ]
     })
 
-@app.route('/test',methods=["GET"])
+@app.route('/test',methods=["GET","POST"])
 def atest():
     return jsonify(calc.test())
      
