@@ -2,7 +2,7 @@
 
 hackinit project
 
-A Web App's backend based on flask.
+A Web App's backend based on flask, using Python3.
 
 
 
@@ -15,5 +15,5 @@ CREATE TABLE `user` (
 ```
 
 ```Shell
-pip install -r requirement.txt
+pip3 install -r requirement.txt
 ```
