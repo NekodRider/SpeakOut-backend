@@ -114,6 +114,8 @@ def get_score(pos, sample, standard):
     get_frame(pos, standard)
     dot_sample = faceplus(sample)
     dot_standard = faceplus(standard)
+    if len(dot_sample)!=22:
+        return -1
     dot_sample = update_sample(dot_sample, dot_standard)
 
     rule = abs(dot_sample[9]['y'] + dot_sample[14]['y'] - dot_sample[3]['y'] - dot_sample[19]['y']) / 2
