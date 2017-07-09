@@ -66,6 +66,9 @@ def get_length(a, b):
 
 def update_sample(sample, standard):
     # print(sample,standard)
+    if len(standard)!=22:
+        print(standard)
+        return sample
     width_standard = standard[6]['x'] - standard[0]['x']
     width_sample = get_length(sample[6], sample[0])
     width = sample[6]['x'] - sample[0]['x']
