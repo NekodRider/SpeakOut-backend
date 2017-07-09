@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import jsonify, make_response, request
+from flask import jsonify, make_response, request ,url_for
 from app import data, app, calc
 import urllib.request, urllib.parse
 import json, os
@@ -9,6 +9,11 @@ import base64, time
 # import datetime, time
 # import hmac, base64, urllib.request
 # from hashlib import sha1
+
+
+@app.route('/static/<file>', methods=["GET", "POST"])
+def static(file):
+    url_for('static', filename=file)
 
 @app.route('/api/reg', methods=["GET", "POST"])
 def register():
