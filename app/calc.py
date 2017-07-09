@@ -114,7 +114,7 @@ def get_score(pos, sample, standard):
     get_frame(pos, standard)
     dot_sample = faceplus(sample)
     dot_standard = faceplus(standard)
-    if len(dot_sample)!=22:
+    if len(dot_sample)!=22 or len(dot_standard)!=22:
         return -1
     dot_sample = update_sample(dot_sample, dot_standard)
 
