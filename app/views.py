@@ -140,14 +140,28 @@ def video_list(word):
                 'videoID': 1,
                 'stars': 4,
                 'viewed': 1234,
-                'title': 'Nice'
+                'title': 'test1'
             },
             {
                 'imageSrc': '',
                 'videoID': 2,
                 'stars': 5,
                 'viewed': 321,
-                'title': 'Hard'
+                'title': 'test2'
+            },
+            {
+                'imageSrc': '',
+                'videoID': 3,
+                'stars': 3,
+                'viewed': 121,
+                'title': 'test3'
+            },
+            {
+                'imageSrc': '',
+                'videoID': 4,
+                'stars': 3,
+                'viewed': 21,
+                'title': 'test4'
             }
         ]
     })
@@ -163,8 +177,20 @@ def word_list(tag):
                 'played': 1314
             },
             {
-                'word': 'gg',
-                'played': 1322
+                'word': 'peace',
+                'played': 1522
+            },
+            {
+                'word': 'fire',
+                'played': 1122
+            },
+            {
+                'word': 'world',
+                'played': 722
+            },
+            {
+                'word': 'hero',
+                'played': 1722
             }
         ]
     })
@@ -176,12 +202,24 @@ def search(keyword):
     return jsonify({
         'list': [
             {
-                'word': 'love',
+                'word': 'communication',
                 'played': 1314
             },
             {
-                'word': 'gg',
+                'word': 'manner',
                 'played': 1322
+            },
+            {
+                'word': 'interview',
+                'played': 2122
+            },
+            {
+                'word': 'interaction',
+                'played': 1022
+            },
+            {
+                'word': 'reading',
+                'played': 1622
             }
         ]
     })
