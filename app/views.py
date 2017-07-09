@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import jsonify, make_response, request
-from app import app, calc
+from app import data,app, calc
 import urllib.request, urllib.parse
 import json,os
 import base64, time
@@ -56,7 +56,7 @@ def login():
     else:
         result = data.login(username, password)
         if (result == 1):
-            response = make_response("")
+            response = make_response(jsonify({}))
             response.set_cookie('username', username)
             response.set_cookie('password', password)
             return response
@@ -91,17 +91,20 @@ def upload():
     enString=rawData['base64String']
     question_id=rawData['questionID']
     linkword=rawData['link_words']
-    #deString=base64.decodebytes(enString)
+    deString=base64.b64decode(enString)
     filename="%s_%s.webm" % (question_id,str(time.clock()))
-    if filename in os.listdir('/upload/%s' % filename):
-        os.remove('/upload/%s' % filename)
-    os.mknod('/upload/%s' % filename)
-    file = open('/upload/%s' % filename, 'wb')
+    if filename in os.listdir(os.getcwd()+'/app/upload'):
+        os.remove(os.getcwd()+'/app/upload/%s' % filename)
+    os.mknod(os.getcwd()+'/app/upload/%s' % filename)
+    file = open(os.getcwd()+'/app/upload/%s' % filename, 'wb')
     file.write(deString)
     res_linkword=[]
     for i in linkword:
-        end=i['time']['end']
-        start=i['time']['start']
+        print(i)
+        end=i['time']['end']/100
+        start=i['time']['start']/100
+        if(end==start):
+            continue
         end_score=calc.judge(filename,question_id,end-(end-start)*1/4)
         mid_score=calc.judge(filename,question_id,(end+start)/2)
         start_score =calc.judge(filename,question_id,start+(end-start)*1/4)
@@ -197,7 +200,7 @@ def detail(videoID):
 
 
 
-@app.route('/test',methods=["GET","POST"])
-def atest():
-    res=calc.test()
-    return jsonify({'res':res})
+#@app.route('/test',methods=["GET","POST"])
+#def atest():
+#    res=calc.test()
+#    return jsonify({'res':res})

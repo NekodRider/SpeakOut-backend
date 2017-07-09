@@ -39,7 +39,8 @@ def faceplus(filepath):
     raw=client.face_shape(CIFile(filepath+'.jpg'),1)
     rawData=raw["data"]
     if "face_shape" in rawData:
-        result=rawData["face_shape"][0]['mouth']
+        if len(rawData["face_shape"])!=0:
+            result=rawData["face_shape"][0]['mouth']
     else:
         print(raw)
 
@@ -143,13 +144,14 @@ def get_score(pos,sample, standard):
 
 
 def get_frame(pos, filepath):
-    subprocess.run("ffmpeg -i %s.webm -y -f  image2  -ss %s -vframes 1  %s.jpg" % (filepath, str(pos), filepath),
+    if not filepath.split("/")[-1] in os.listdir(os.getcwd()+'/app/question'):
+        subprocess.call("ffmpeg -i %s -y -f  image2  -ss %s -vframes 1  %s.jpg" % (filepath, str(pos), filepath),
                    shell=True)
 
 def judge(filename,videoID,pos):
     res=get_score(pos,os.getcwd()+'/app/upload/'+filename,os.getcwd()+'/app/question/'+videoID+'.mp4')
     return res
 
-def test():
-    res=get_score(1,os.getcwd()+'/app/question/a',os.getcwd()+'/app/question/b')
-    return res
+#def test():
+#    res=get_score(1,os.getcwd()+'/app/question/a',os.getcwd()+'/app/question/b')
+#    return res
