@@ -11,7 +11,6 @@ config = {
 }
 
 
-
 def register(username, password):
     connection = pymysql.connect(**config)
     c = connection.cursor()
@@ -43,4 +42,11 @@ def login(username, password):
     else:
         return 0
 
-
+# def get_info(user):
+#     return info
+#
+# def get_list(word=None,tag=None,keyword=None):
+#     return user
+#
+# def get_detail(videoID):
+#     return detail
