@@ -1,7 +1,10 @@
-click==6.7
 Flask==0.12.2
+click==6.7
 itsdangerous==0.24
-Jinja2==2.9.6
-MarkupSafe==1.0
+Jinja2==2.8
+MarkupSafe==0.23
 PyMySQL==0.7.11
+qcloud-image==1.0.0
+requests==2.9.1
+urllib3==1.13.1
 Werkzeug==0.12.2
