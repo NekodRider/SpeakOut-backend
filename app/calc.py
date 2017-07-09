@@ -93,6 +93,7 @@ def update_sample(sample, standard):
             }
     sample[0] = standard[0]
     sample[6] = standard[6]
+    print(sample,standard)
     return sample
 
 
